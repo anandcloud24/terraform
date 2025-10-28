@@ -1,21 +1,21 @@
-resource "aws_vpc" "vpc" {
-  cidr_block = "10.0.0.0/16"
-  tags = {
-    Name = "vpc_terr"
+resource "aws_vpc" "name" {
+  cidr_block = var.vpc
+    tags = {
+    Name = "vpc_ab"
   }
 }
 
 resource "aws_subnet" "name" {
-    vpc_id = aws_vpc.vpc.id
-    cidr_block = "10.0.0.0/24"
+    vpc_id = aws_vpc.name.id
+    cidr_block = var.subnet
     tags = {
-    Name = "subnet1"
+    Name = "subnet-er"
     }
 }
 resource "aws_internet_gateway" "name" {
-    vpc_id = aws_vpc.vpc.id
+    vpc_id = aws_vpc.name.id
      tags = {
-       Name = "ig anand"
+       Name = "ig test"
      }
 
   
