@@ -1,10 +1,10 @@
 resource "aws_db_instance" "anand" {
   allocated_storage       = 10
-  db_name                 = "basesmas"
-  identifier              = "testings"
+  db_name                 = "database"
+  identifier              = "testing"
   engine                  = "mysql"
   engine_version          = "8.0"
-  instance_class          = "db.t3.micro"
+  instance_class          = "db.t2.micro"
   username                = "admin"
   password                = "Anand12345"
   db_subnet_group_name    = aws_db_subnet_group.sub_grp.id
@@ -26,7 +26,7 @@ resource "aws_db_instance" "anand" {
   deletion_protection = false
 
   # Skip final snapshot
-  skip_final_snapshot = true
+  skip_final_snapshot = false
 }
 
 # # IAM Role for RDS Enhanced Monitoring
@@ -88,7 +88,7 @@ resource "aws_db_subnet_group" "sub_grp" {
 resource "aws_db_instance" "read_replica" {
   identifier            = "rds-test-replica"
   instance_class        = "db.t3.micro"
-  publicly_accessible   = false
+  publicly_accessible   = true
   replicate_source_db = aws_db_instance.anand.arn # ✅ link to primary DB
   db_subnet_group_name  = aws_db_subnet_group.sub_grp.name
   monitoring_interval   = 60
@@ -102,29 +102,4 @@ resource "aws_db_instance" "read_replica" {
     Name = "rds-read-replica"
     Role = "read-replica"
   }
-}
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.name.id
-  tags = {
-    Name = "vpc-igw"
-  }
-}
-resource "aws_route_table" "public_rt" {
-  vpc_id = aws_vpc.name.id
-}
-
-resource "aws_route" "default_route" {
-  route_table_id         = aws_route_table.public_rt.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.igw.id
-}
-
-resource "aws_route_table_association" "subnet1_assoc" {
-  subnet_id      = aws_subnet.subnet-a.id
-  route_table_id = aws_route_table.public_rt.id
-}
-
-resource "aws_route_table_association" "subnet2_assoc" {
-  subnet_id      = aws_subnet.subnet-b.id
-  route_table_id = aws_route_table.public_rt.id
 }
