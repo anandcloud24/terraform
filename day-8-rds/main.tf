@@ -18,15 +18,13 @@ resource "aws_db_instance" "default" {
   monitoring_interval      = 60  # Collect metrics every 60 seconds
   monitoring_role_arn      = aws_iam_role.rds_monitoring-1.arn
 
-  # Enable performance insights
-  # performance_insights_enabled          = true
-  # performance_insights_retention_period = 7  # Retain insights for 7 days
+ 
 
   # Maintenance window
   maintenance_window = "sun:04:00-sun:05:00"  # Maintenance every Sunday (UTC)
 
   # Enable deletion protection (to prevent accidental deletion)
-  deletion_protection = true
+  deletion_protection = false
 
   # Skip final snapshot
   skip_final_snapshot = true
