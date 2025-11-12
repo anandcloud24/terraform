@@ -2,7 +2,7 @@ resource "aws_security_group" "anand" {
   name        = "anand"
   description = "Allow"
 
-  ingress = [#it will creating sg with same cider to multiple port ranges to create multiple sgs
+  ingress = [#it will creating sg with same cidr to multiple port ranges to create multiple rules creating the sg
     
     for port in [22, 80, 443, 8080, 9000, 3000, 8082, 8081, 3306] : {
       description      = "inbound rules"
