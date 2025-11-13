@@ -35,7 +35,7 @@
 # Example-3
 variable "environment" {
   type    = bool
-  default = true
+  default = false
 }
 
 resource "aws_instance" "example" {
